@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PortSide - Sales Reports</title>
+    <!-- CSS Link -->
+    <link rel="stylesheet" href="/src/style.css">
+</head>
+
+<body>
+    <div id="reports-app">
+        <div class="dashboard-layout">
+            <!-- Sidebar -->
+            <aside class="dash-sidebar">
+                <div class="dash-brand">PortSide Admin</div>
+                <nav class="dash-nav">
+                    <a href="/dashboard.html" class="dash-link">Overview</a>
+                    <a href="/stocks.html" class="dash-link">Stock Management</a>
+                    <a href="/expenses.html" class="dash-link">Daily Expenses</a>
+                    <a href="/reports.html" class="dash-link active">Sales Reports</a>
+                    <a href="/menu.html" class="dash-link">Menu Management</a>
+                    <a href="/staff.html" class="dash-link">Staff</a>
+                    <a href="#" class="dash-link">Settings</a>
+                    <div class="dash-divider"></div>
+                    <a href="/" class="dash-link">🖥️ Open POS</a>
+                    <a href="/login.html" class="dash-link logout">Logout</a>
+                </nav>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="dash-main">
+                <header class="dash-header">
+                    <h2>Sales Reports</h2>
+                    <div class="user-profile">Admin User</div>
+                </header>
+
+                <div class="stock-controls">
+                    <div class="filter-group">
+                        <label style="color:white; margin-right:0.5rem;">Date:</label>
+                        <input type="date" id="dateFilter" class="search-input" style="color-scheme: dark;">
+                    </div>
+                </div>
+
+                <!-- Metrics Cards -->
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-title">Total Sales Today</div>
+                        <div class="metric-value" id="totalRevenue">₱0.00</div>
+                        <div class="metric-trend positive">Gross Sales</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-title">Total Expenses</div>
+                        <div class="metric-value" id="totalExpenses" style="color:var(--color-danger)">₱0.00</div>
+                        <div class="metric-trend" style="color:var(--color-danger)">Cost of Goods</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-title">Net Profit (Today)</div>
+                        <div class="metric-value" id="netProfit">₱0.00</div>
+                        <div class="metric-trend positive" id="profitTrend">Revenue - Expenses</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-title">Lifetime Profit</div>
+                        <div class="metric-value" id="lifetimeProfit">₱0.00</div>
+                        <div class="metric-trend positive">All Time</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-title">Top Item</div>
+                        <div class="metric-value" id="topItem" style="font-size:1.5rem">-</div>
+                    </div>
+                </div>
+
+                <div class="recent-orders-section">
+                    <h3>Sales Breakdown</h3>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Order #</th>
+                                <th>Time</th>
+                                <th>Items</th>
+                                <th>Total (₱)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="salesTableBody">
+                            <!-- JS Injected -->
+                        </tbody>
+                    </table>
+                </div>
+
+            </main>
+        </div>
+    </div>
+
+    <script type="module" src="/src/reports.js"></script>
+</body>
+
+</html>

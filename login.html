@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PortSide Grill - Login</title>
+    <link rel="stylesheet" href="/src/style.css">
+</head>
+
+<body class="auth-body">
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <h1>PortSide Grill</h1>
+                <p>POS System Access</p>
+            </div>
+            <form id="loginForm" class="auth-form">
+                <div class="form-group">
+                    <label for="username">Staff ID / Username</label>
+                    <input type="text" id="username" name="username" required placeholder="Enter ID">
+                </div>
+                <div class="form-group">
+                    <label for="password">PIN / Password</label>
+                    <input type="password" id="password" name="password" required placeholder="Enter PIN">
+                </div>
+                <button type="submit" class="btn-primary full-width">Login</button>
+            </form>
+            <div class="auth-footer">
+                <p>New Staff? <a href="/register.html">Register here</a></p>
+            </div>
+
+        </div>
+    </div>
+    <script type="module" src="/src/main.js"></script>
+</body>
+
+</html>

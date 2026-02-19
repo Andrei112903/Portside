@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PortSide - Stock Management</title>
+    <!-- CSS is imported by JS in module -->
+</head>
+
+<body>
+    <div id="stock-app">
+        <div class="dashboard-layout">
+            <!-- Sidebar (V1 Style) -->
+            <aside class="dash-sidebar">
+                <div class="dash-brand">PortSide Admin</div>
+                <nav class="dash-nav">
+                    <a href="/dashboard.html" class="dash-link">Overview</a>
+                    <a href="/stocks.html" class="dash-link active">Stock Management</a>
+                    <a href="/expenses.html" class="dash-link">Daily Expenses</a>
+                    <a href="/reports.html" class="dash-link">Sales Reports</a>
+                    <a href="/menu.html" class="dash-link">Menu Management</a>
+                    <a href="/staff.html" class="dash-link">Staff</a>
+                    <a href="#" class="dash-link">Settings</a>
+                    <div class="dash-divider"></div>
+                    <a href="/" class="dash-link">🖥️ Open POS</a>
+                    <a href="/login.html" class="dash-link logout">Logout</a>
+                </nav>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="dash-main">
+                <header class="dash-header">
+                    <h2>Inventory Management</h2>
+                    <div class="user-profile">Admin User</div>
+                </header>
+
+                <div class="stock-controls">
+                    <div class="filter-group">
+                        <input type="text" id="searchInput" class="search-input" placeholder="Search items...">
+                        <select id="categoryFilter" class="category-select">
+                            <option value="all">All Categories</option>
+                            <option value="Meat">Meat</option>
+                            <option value="Seafood">Seafood</option>
+                            <option value="Produce">Produce</option>
+                            <option value="Dry Goods">Dry Goods</option>
+                            <option value="Beverages">Beverages</option>
+                        </select>
+                    </div>
+                    <div style="display:flex; gap:1rem; align-items:center;">
+                        <div
+                            style="background:rgba(239,68,68,0.1); padding:0.5rem 1rem; border-radius:0.5rem; border:1px solid var(--color-danger); display:flex; flex-direction:column; align-items:end;">
+                            <span
+                                style="color:var(--color-text-secondary); font-size:0.75rem; text-transform:uppercase;">Expenses
+                                Today</span>
+                            <div style="color:var(--color-danger); font-weight:700; font-size:1.1rem; line-height:1;"
+                                id="dailyExpensesValue">$0.00</div>
+                        </div>
+                        <div
+                            style="background:rgba(34,197,94,0.1); padding:0.5rem 1rem; border-radius:0.5rem; border:1px solid var(--color-success); display:flex; flex-direction:column; align-items:end;">
+                            <span
+                                style="color:var(--color-text-secondary); font-size:0.75rem; text-transform:uppercase;">Inventory
+                                Value</span>
+                            <div style="color:var(--color-success); font-weight:700; font-size:1.1rem; line-height:1;"
+                                id="totalInventoryValue">$0.00</div>
+                        </div>
+                        <button class="btn-success" id="btnOpenModal">+ Add New Item</button>
+                    </div>
+                </div>
+
+                <div class="recent-orders-section">
+                    <table class="data-table" id="stockTable">
+                        <thead>
+                            <tr>
+                                <th>Item Name</th>
+                                <th>Category</th>
+                                <th>Unit</th>
+                                <th>Quantity</th>
+                                <th>Cost / Unit</th>
+                                <th>Total Value</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="stockTableBody">
+                            <!-- JS Injected -->
+                        </tbody>
+                    </table>
+                </div>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- Add/Edit Modal -->
+    <div id="itemModal" class="stock-modal">
+        <div class="modal-content">
+            <h2 style="margin-bottom: 1.5rem; color:white;" id="modalTitle">Add New Item</h2>
+            <form id="stockForm">
+                <input type="hidden" id="itemId">
+                <div class="form-group">
+                    <label>Item Name</label>
+                    <input type="text" id="itemName" required>
+                </div>
+                <div class="form-group">
+                    <label>Category</label>
+                    <select id="itemCategory" class="category-select" style="width:100%" required>
+                        <option value="Meat">Meat</option>
+                        <option value="Seafood">Seafood</option>
+                        <option value="Produce">Produce</option>
+                        <option value="Dry Goods">Dry Goods</option>
+                        <option value="Beverages">Beverages</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Unit Type</label>
+                    <div style="display: flex; gap: 1rem; margin-top: 0.5rem;">
+                        <label style="display:flex; align-items:center; gap:0.5rem; color:var(--color-text-primary);">
+                            <input type="radio" name="itemUnit" value="kg" checked> Kilograms (kg)
+                        </label>
+                        <label style="display:flex; align-items:center; gap:0.5rem; color:var(--color-text-primary);">
+                            <input type="radio" name="itemUnit" value="pcs"> Pieces (pcs)
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group" style="display:flex; gap:1rem;">
+                    <div style="flex:1">
+                        <label>Quantity</label>
+                        <input type="number" step="0.01" id="itemQty" required>
+                    </div>
+                    <div style="flex:1">
+                        <label>Cost per Unit ($)</label>
+                        <input type="number" step="0.01" id="itemPrice" required>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                    <button type="button" class="btn-danger" style="flex:1" onclick="closeModal()">Cancel</button>
+                    <button type="submit" class="btn-success" style="flex:1">Save Item</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Usage/Deduct Modal -->
+    <div id="usageModal" class="stock-modal">
+        <div class="modal-content">
+            <h2 style="margin-bottom: 1.5rem; color:white;">Record Daily Usage</h2>
+            <form id="usageForm">
+                <input type="hidden" id="usageItemId">
+                <div class="form-group">
+                    <label>Item Being Used</label>
+                    <input type="text" id="usageItemName" readonly
+                        style="background:rgba(255,255,255,0.05); cursor:not-allowed;">
+                </div>
+                <div class="form-group">
+                    <label>Amount Used (<span id="usageUnitDisplay">kg</span>)</label>
+                    <input type="number" step="0.01" id="usageAmount" required placeholder="Enter amount..." autofocus>
+                </div>
+                <div class="form-group">
+                    <p style="color:var(--color-text-secondary); font-size:0.9rem;">
+                        This will deduct from stock and record an expense of
+                        <strong style="color:var(--color-danger)" id="estCostDisplay">$0.00</strong>.
+                    </p>
+                </div>
+
+                <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                    <button type="button" class="btn-danger" style="flex:1" onclick="closeUsageModal()">Cancel</button>
+                    <button type="submit" class="btn-success" style="flex:1">Confirm Usage</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script type="module" src="/src/stocks.js"></script>
+</body>
+
+</html>

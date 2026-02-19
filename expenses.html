@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PortSide - Daily Expenses</title>
+    <link rel="stylesheet" href="/src/style.css">
+</head>
+
+<body>
+    <div id="expenses-app">
+        <div class="dashboard-layout">
+            <aside class="dash-sidebar">
+                <div class="dash-brand">PortSide Admin</div>
+                <nav class="dash-nav">
+                    <a href="/dashboard.html" class="dash-link">Overview</a>
+                    <a href="/stocks.html" class="dash-link">Stock Management</a>
+                    <a href="/expenses.html" class="dash-link active">Daily Expenses</a>
+                    <a href="/reports.html" class="dash-link">Sales Reports</a>
+                    <a href="/menu.html" class="dash-link">Menu Management</a>
+                    <a href="/kitchen.html" class="dash-link" style="color:#fbbf24; font-weight:700;">👨‍🍳 Kitchen
+                        View</a>
+                    <a href="/staff.html" class="dash-link">Staff</a>
+                    <a href="/settings.html" class="dash-link">Settings</a>
+                    <div class="dash-divider"></div>
+                    <a href="/" class="dash-link">🖥️ Open POS</a>
+                    <a href="/login.html" class="dash-link logout">Logout</a>
+                </nav>
+            </aside>
+
+            <main class="dash-main">
+                <header class="dash-header">
+                    <h2>Daily Expenses</h2>
+                    <div class="user-profile">Admin User</div>
+                </header>
+
+                <div class="stock-controls">
+                    <div
+                        style="color: var(--color-text-secondary); padding: 1rem; background: rgba(255,255,255,0.05); border-radius: 0.5rem; display: flex; align-items: center; gap: 1rem;">
+                        <span style="font-size: 1.5rem;">ℹ️</span>
+                        <div>
+                            <strong>Automatic Tracking Active</strong>
+                            <div style="font-size: 0.9rem; opacity: 0.8;">Expenses are automatically generated when you
+                                deduct stock in Stock Management.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="recent-orders-section">
+                    <h3>Today's Expenses</h3>
+                    <div style="font-size: 1.5rem; font-weight: bold; margin-bottom: 1rem; color: var(--color-danger);"
+                        id="dailyTotal">
+                        Total: ₱0.00
+                    </div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Date/Time</th>
+                                <th>Description</th>
+                                <th>Category</th>
+                                <th>Amount</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="expenseTable">
+                            <!-- JS Injected -->
+                        </tbody>
+                    </table>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+    <script type="module">
+        const table = document.getElementById('expenseTable');
+        const totalEl = document.getElementById('dailyTotal');
+
+        function getExpenses() {
+            return JSON.parse(localStorage.getItem('expenses')) || [];
+        }
+
+        function saveExpenses(data) {
+            localStorage.setItem('expenses', JSON.stringify(data));
+            render();
+        }
+
+        function render() {
+            const expenses = getExpenses();
+            // Sort: Newest first
+            expenses.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            const today = new Date().toLocaleDateString();
+            const todaysExpenses = expenses.filter(e => new Date(e.date).toLocaleDateString() === today);
+
+            // Handle string vs number cost issues from older data
+            const total = todaysExpenses.reduce((sum, e) => sum + (parseFloat(e.cost) || 0), 0);
+
+            totalEl.textContent = `Total Today: ₱${total.toFixed(2)}`;
+
+            if (expenses.length === 0) {
+                table.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:1rem;">No expenses recorded.</td></tr>';
+                return;
+            }
+
+            table.innerHTML = expenses.map((e, index) => {
+                const description = e.desc || `Stock Usage: ${e.itemName} (${e.amount} ${e.unit})`;
+                return `
+                <tr>
+                    <td>${new Date(e.date).toLocaleString()}</td>
+                    <td>${description}</td>
+                    <td><span class="badge" style="background:rgba(255,255,255,0.05)">${e.category}</span></td>
+                    <td style="font-weight:700; color:var(--color-danger)">-₱${parseFloat(e.cost).toFixed(2)}</td>
+                    <td><button class="btn-danger" style="padding:0.25rem 0.5rem;" onclick="window.deleteExpense(${e.id})">×</button></td>
+                </tr>
+            `}).join('');
+        }
+
+        window.deleteExpense = (id) => {
+            if (confirm('Delete this expense?')) {
+                let expenses = getExpenses();
+                expenses = expenses.filter(e => e.id !== id);
+                saveExpenses(expenses);
+            }
+        };
+
+        render();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Debug Login</title>
+</head>
+
+<body>
+    <h1>Debug Login Flow</h1>
+    <form id="loginForm">
+        <input type="text" id="username" value="admin">
+        <input type="password" id="password" value="1234">
+        <button type="submit">Login</button>
+    </form>
+    <div id="output"></div>
+
+    <script>
+        const output = document.getElementById('output');
+        function log(msg) {
+            output.innerHTML += msg + '<br>';
+            console.log(msg);
+        }
+
+        const loginForm = document.getElementById('loginForm');
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            log('Form submitted');
+            const username = document.getElementById('username').value;
+            const pin = document.getElementById('password').value;
+            log(`User: ${username}, PIN: ${pin}`);
+
+            if (username && pin) {
+                let role = 'staff';
+                if (username.toLowerCase() === 'admin' && pin === '1234') {
+                    role = 'admin';
+                }
+                log(`Role determined: ${role}`);
+
+                // Mock storage
+                log('Setting localStorage...');
+
+                if (role === 'admin') {
+                    log('REDIRECTING TO: /dashboard.html');
+                } else {
+                    log('REDIRECTING TO: /');
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PortSide - Staff Management</title>
+    <link rel="stylesheet" href="/src/style.css">
+</head>
+
+<body>
+    <div id="staff-app">
+        <div class="dashboard-layout">
+            <!-- Sidebar -->
+            <aside class="dash-sidebar">
+                <div class="dash-brand">PortSide Admin</div>
+                <nav class="dash-nav">
+                    <a href="/dashboard.html" class="dash-link">Overview</a>
+                    <a href="/stocks.html" class="dash-link">Stock Management</a>
+                    <a href="/expenses.html" class="dash-link">Daily Expenses</a>
+                    <a href="/reports.html" class="dash-link">Sales Reports</a>
+                    <a href="/menu.html" class="dash-link">Menu Management</a>
+                    <a href="/staff.html" class="dash-link active">Staff</a>
+                    <a href="#" class="dash-link">Settings</a>
+                    <div class="dash-divider"></div>
+                    <a href="/" class="dash-link">🖥️ Open POS</a>
+                    <a href="/login.html" class="dash-link logout">Logout</a>
+                </nav>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="dash-main">
+                <header class="dash-header">
+                    <h2>Staff Management</h2>
+                    <div class="user-profile">Admin User</div>
+                </header>
+
+                <div class="stock-controls">
+                    <div class="search-box">
+                        <input type="text" id="staffSearch" placeholder="Search staff..." class="search-input">
+                    </div>
+                    <div class="action-buttons">
+                        <button class="btn-primary" id="addStaffBtn" onclick="openStaffModal()">+ Add New Staff</button>
+                    </div>
+                </div>
+
+                <!-- Staff Grid -->
+                <div class="metrics-grid" id="staffGrid"
+                    style="grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));">
+                    <!-- Staff Cards Injected Here -->
+                </div>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- Add Staff Modal -->
+    <div id="staffModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add New Staff</h3>
+                <span class="close-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="staffForm">
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" id="staffName" required class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label>Username (for Login)</label>
+                        <input type="text" id="staffUsername" required class="form-input"
+                            style="background:rgba(255,255,255,0.05);">
+                    </div>
+                    <div class="form-group">
+                        <label>Role</label>
+                        <select id="staffRole" class="form-input">
+                            <option value="Server">Server</option>
+                            <option value="Kitchen">Kitchen Staff</option>
+                            <option value="Manager">Manager</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Passcode (Login)</label>
+                        <input type="password" id="staffPasscode" required class="form-input"
+                            placeholder="Simple numeric code">
+                    </div>
+                    <button type="submit" class="btn-primary" style="width:100%; margin-top:1rem;">Save Staff</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Direct Modal Control (Fail-safe)
+        function openStaffModal() {
+            const modal = document.getElementById('staffModal');
+            if (modal) modal.style.display = 'flex';
+        }
+
+        // Expose to window for onclick
+        window.openStaffModal = openStaffModal;
+
+        const closeBtn = document.querySelector('.close-modal');
+        if (closeBtn) {
+            closeBtn.onclick = function () {
+                const modal = document.getElementById('staffModal');
+                if (modal) modal.style.display = 'none';
+            }
+        }
+
+        window.onclick = function (event) {
+            const modal = document.getElementById('staffModal');
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+    <script type="module" src="/src/staff.js"></script>
+    <script type="module" src="/src/main.js"></script>
+</body>
+
+</html>

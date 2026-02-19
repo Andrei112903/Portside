@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PortSide - Kitchen Display</title>
+    <link rel="stylesheet" href="/src/style.css">
+    <style>
+        /* Specific Kitchen Styles */
+        body {
+            background-color: #1e293b;
+            overflow-x: hidden;
+        }
+
+        .kitchen-layout {
+            display: grid;
+            grid-template-rows: auto 1fr;
+            height: 100vh;
+        }
+
+        .kitchen-header {
+            background: #0f172a;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 3px solid #334155;
+        }
+
+        .kitchen-brand {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: white;
+            letter-spacing: 1px;
+        }
+
+        .kitchen-grid {
+            padding: 1.5rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            overflow-y: auto;
+            align-content: start;
+        }
+
+        /* Ticket Card */
+        .ticket-card {
+            background: #cbd5e1;
+            /* Light ticket color usually better for reading in kitchen */
+            color: #1e293b;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            border-top: 6px solid #fbbf24;
+            /* Warning/Pending color */
+            animation: popIn 0.3s ease-out;
+        }
+
+        .ticket-card.high-priority {
+            border-top-color: #ef4444;
+        }
+
+        .ticket-header {
+            background: #e2e8f0;
+            padding: 0.75rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            font-weight: 700;
+            border-bottom: 2px dashed #94a3b8;
+        }
+
+        .ticket-body {
+            padding: 1rem;
+            flex: 1;
+        }
+
+        .ticket-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .ticket-item .qty {
+            background: #1e293b;
+            color: white;
+            width: 2rem;
+            height: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            margin-right: 0.75rem;
+            font-size: 1rem;
+        }
+
+        .ticket-footer {
+            padding: 0.75rem;
+            background: #e2e8f0;
+            text-align: center;
+        }
+
+        .btn-complete {
+            width: 100%;
+            padding: 0.75rem;
+            background: #22c55e;
+            color: white;
+            border: none;
+            border-radius: 0.25rem;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 1rem;
+            text-transform: uppercase;
+        }
+
+        .btn-complete:hover {
+            background: #16a34a;
+        }
+
+        @keyframes popIn {
+            from {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="kitchen-layout">
+        <header class="kitchen-header">
+            <div class="kitchen-brand">👨‍🍳 KITCHEN DISPLAY SYSTEM</div>
+            <div style="color: #94a3b8; font-weight: 600;" id="clock">12:00 PM</div>
+            <a href="/login.html" class="kitchen-logout"
+                style="color:#ef4444; text-decoration:none; margin-left:2rem; font-weight:bold;">Logout</a>
+        </header>
+
+        <main class="kitchen-grid" id="ticket-grid">
+            <!-- Tickets injected here -->
+        </main>
+    </div>
+
+    <script type="module" src="/src/kitchen.js"></script>
+    <script type="module" src="/src/main.js"></script>
+</body>
+
+</html>

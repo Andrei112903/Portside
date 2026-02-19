@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PortSide - Settings</title>
+    <link rel="stylesheet" href="/src/style.css">
+</head>
+
+<body>
+    <div id="settings-app">
+        <div class="dashboard-layout">
+            <!-- Sidebar -->
+            <aside class="dash-sidebar">
+                <div class="dash-brand">PortSide Admin</div>
+                <nav class="dash-nav">
+                    <a href="/dashboard.html" class="dash-link">Overview</a>
+                    <a href="/stocks.html" class="dash-link">Stock Management</a>
+                    <a href="/expenses.html" class="dash-link">Daily Expenses</a>
+                    <a href="/reports.html" class="dash-link">Sales Reports</a>
+                    <a href="/menu.html" class="dash-link">Menu Management</a>
+                    <a href="/kitchen.html" class="dash-link" style="color:#fbbf24; font-weight:700;">👨‍🍳 Kitchen
+                        View</a>
+                    <a href="/staff.html" class="dash-link">Staff</a>
+                    <a href="/settings.html" class="dash-link active">Settings</a>
+                    <div class="dash-divider"></div>
+                    <a href="/" class="dash-link">🖥️ Open POS</a>
+                    <a href="/login.html" class="dash-link logout">Logout</a>
+                </nav>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="dash-main">
+                <header class="dash-header">
+                    <h2>System Settings</h2>
+                    <div class="user-profile">Admin User</div>
+                </header>
+
+                <div class="settings-container"
+                    style="max-width: 600px; background: var(--glass-bg); padding: 2rem; border-radius: 1rem; border: 1px solid var(--color-border);">
+                    <form id="settingsForm">
+                        <div class="form-group">
+                            <label>Store Name</label>
+                            <input type="text" id="storeName" class="form-input" placeholder="PortSide Grill">
+                        </div>
+                        <div class="form-group">
+                            <label>Tax Rate (%)</label>
+                            <input type="number" id="taxRate" class="form-input" placeholder="10" step="0.1">
+                        </div>
+                        <div class="form-group">
+                            <label>Currency Symbol</label>
+                            <input type="text" id="currencySymbol" class="form-input" placeholder="₱">
+                        </div>
+                        <button type="submit" class="btn-primary" style="margin-top: 1rem;">Save Settings</button>
+                    </form>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script type="module">
+        import '/src/main.js'; // Auth check matches
+
+        const form = document.getElementById('settingsForm');
+        const nameInput = document.getElementById('storeName');
+        const taxInput = document.getElementById('taxRate');
+        const currencyInput = document.getElementById('currencySymbol');
+
+        // Load Settings
+        const settings = JSON.parse(localStorage.getItem('appSettings')) || {
+            name: 'PortSide Grill',
+            tax: 10,
+            currency: '₱'
+        };
+
+        nameInput.value = settings.name;
+        taxInput.value = settings.tax;
+        currencyInput.value = settings.currency;
+
+        // Save Settings
+        form.onsubmit = (e) => {
+            e.preventDefault();
+            const newSettings = {
+                name: nameInput.value,
+                tax: parseFloat(taxInput.value),
+                currency: currencyInput.value
+            };
+            localStorage.setItem('appSettings', JSON.stringify(newSettings));
+            alert('Settings Saved!');
+            location.reload();
+        };
+    </script>
+</body>
+
+</html>

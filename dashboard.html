@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PortSide Grill - Admin Dashboard</title>
+    <!-- Use direct link for failsafe, main.js also imports it -->
+    <link rel="stylesheet" href="/src/style.css">
+</head>
+
+<body>
+    <div id="dashboard-app">
+        <div class="dashboard-layout">
+            <aside class="dash-sidebar">
+                <div class="dash-brand">PortSide Admin</div>
+                <nav class="dash-nav">
+                    <a href="/dashboard.html" class="dash-link active">Overview</a>
+                    <a href="/stocks.html" class="dash-link">Stock Management</a>
+                    <a href="/expenses.html" class="dash-link">Daily Expenses</a>
+                    <a href="/reports.html" class="dash-link">Sales Reports</a>
+                    <a href="/menu.html" class="dash-link">Menu Management</a>
+                    <a href="/kitchen.html" class="dash-link" style="color:#fbbf24; font-weight:700;">👨‍🍳 Kitchen
+                        View</a>
+                    <a href="/staff.html" class="dash-link">Staff</a>
+                    <a href="/settings.html" class="dash-link">Settings</a>
+                    <div class="dash-divider"></div>
+                    <a href="/" class="dash-link">🖥️ Open POS</a>
+                    <a href="#" id="dash-logout" class="dash-link logout">Logout</a>
+                </nav>
+            </aside>
+            <main class="dash-main">
+                <header class="dash-header">
+                    <h2>Dashboard Overview</h2>
+                    <div class="user-profile">Admin User</div>
+                </header>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3>Total Sales (Today)</h3>
+                        <div class="value">$1,250.00</div>
+                        <div class="trend up">▲ 12% vs yesterday</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Total Orders</h3>
+                        <div class="value">45</div>
+                        <div class="trend up">▲ 5% vs yesterday</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Active Staff</h3>
+                        <div class="value">3</div>
+                        <div class="trend neutral">• All stations covered</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Top Item</h3>
+                        <div class="value">Portside Burger</div>
+                        <div class="trend">18 orders today</div>
+                    </div>
+                </div>
+
+                <div class="recent-orders-section">
+                    <h3>Recent Transactions</h3>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Order #</th>
+                                <th>Time</th>
+                                <th>Server</th>
+                                <th>Total</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>#105</td>
+                                <td>10:45 AM</td>
+                                <td>John</td>
+                                <td>$45.50</td>
+                                <td><span class="status-badge success">Paid</span></td>
+                            </tr>
+                            <tr>
+                                <td>#104</td>
+                                <td>10:32 AM</td>
+                                <td>Sarah</td>
+                                <td>$22.00</td>
+                                <td><span class="status-badge success">Paid</span></td>
+                            </tr>
+                            <tr>
+                                <td>#103</td>
+                                <td>10:15 AM</td>
+                                <td>John</td>
+                                <td>$85.00</td>
+                                <td><span class="status-badge success">Paid</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </main>
+        </div>
+    </div>
+    <script type="module" src="/src/main.js"></script>
+</body>
+
+</html>
