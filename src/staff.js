@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const grid = document.getElementById('staffGrid');
     const searchInput = document.getElementById('staffSearch');
     const modal = document.getElementById('staffModal');
-    const addBtn = document.getElementById('addStaffBtn');
+    // const addBtn = document.getElementById('addStaffBtn'); // Removed
     const closeBtn = document.querySelector('.close-modal');
     const form = document.getElementById('staffForm');
 
@@ -85,14 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Modal Logic using addEventListener
-    if (addBtn && modal) {
-        addBtn.addEventListener('click', () => {
-            console.log('Add clicked');
-            modal.style.display = 'flex';
-        });
-    } else {
-        console.error('Add Button or Modal not found', { addBtn, modal });
-    }
+    // Add Button Removed
 
     if (closeBtn && modal) {
         closeBtn.addEventListener('click', () => {

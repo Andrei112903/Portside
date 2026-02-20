@@ -25,7 +25,7 @@
                     <a href="/staff.html" class="dash-link">Staff</a>
                     <a href="/settings.html" class="dash-link">Settings</a>
                     <div class="dash-divider"></div>
-                    <a href="/" class="dash-link">🖥️ Open POS</a>
+                    <a href="/pos.html" class="dash-link">🖥️ Open POS</a>
                     <a href="#" id="dash-logout" class="dash-link logout">Logout</a>
                 </nav>
             </aside>
@@ -38,23 +38,23 @@
                 <div class="stats-grid">
                     <div class="stat-card">
                         <h3>Total Sales (Today)</h3>
-                        <div class="value">$1,250.00</div>
-                        <div class="trend up">▲ 12% vs yesterday</div>
+                        <div class="value" id="dailySales">₱0.00</div>
+
                     </div>
                     <div class="stat-card">
                         <h3>Total Orders</h3>
-                        <div class="value">45</div>
-                        <div class="trend up">▲ 5% vs yesterday</div>
+                        <div class="value" id="dailyOrders">0</div>
+
                     </div>
                     <div class="stat-card">
                         <h3>Active Staff</h3>
-                        <div class="value">3</div>
-                        <div class="trend neutral">• All stations covered</div>
+                        <div class="value" id="totalStaff">0</div>
+                        <div class="trend neutral">• Registered Staff</div>
                     </div>
                     <div class="stat-card">
                         <h3>Top Item</h3>
-                        <div class="value">Portside Burger</div>
-                        <div class="trend">18 orders today</div>
+                        <div class="value" id="topItem">--</div>
+                        <div class="trend" id="topItemCount">0 orders today</div>
                     </div>
                 </div>
 
@@ -70,34 +70,15 @@
                                 <th>Status</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>#105</td>
-                                <td>10:45 AM</td>
-                                <td>John</td>
-                                <td>$45.50</td>
-                                <td><span class="status-badge success">Paid</span></td>
-                            </tr>
-                            <tr>
-                                <td>#104</td>
-                                <td>10:32 AM</td>
-                                <td>Sarah</td>
-                                <td>$22.00</td>
-                                <td><span class="status-badge success">Paid</span></td>
-                            </tr>
-                            <tr>
-                                <td>#103</td>
-                                <td>10:15 AM</td>
-                                <td>John</td>
-                                <td>$85.00</td>
-                                <td><span class="status-badge success">Paid</span></td>
-                            </tr>
+                        <tbody id="recentOrdersBody">
+                            <!-- JS Injected -->
                         </tbody>
                     </table>
                 </div>
             </main>
         </div>
     </div>
+    <script type="module" src="/src/dashboard.js"></script>
     <script type="module" src="/src/main.js"></script>
 </body>
 

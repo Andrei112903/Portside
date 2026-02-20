@@ -5,6 +5,35 @@ const clock = document.getElementById('clock');
 
 // State
 let activeOrders = getActiveOrders();
+let knownOrderIds = new Set(activeOrders.map(o => o.id)); // Track known IDs
+let isFirstLoad = true; // Prevent sound on initial load
+
+// Audio Context for a pleasant chime
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+function playNotification() {
+    // Resume context if suspended (browser policy)
+    if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+    }
+
+    const oscillator = audioCtx.createOscillator();
+    const gainNode = audioCtx.createGain();
+
+    oscillator.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+
+    // Pleasant "Ding"
+    oscillator.type = 'sine';
+    oscillator.frequency.setValueAtTime(523.25, audioCtx.currentTime); // C5
+    oscillator.frequency.exponentialRampToValueAtTime(1046.5, audioCtx.currentTime + 0.1); // C6
+
+    gainNode.gain.setValueAtTime(0.5, audioCtx.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
+
+    oscillator.start();
+    oscillator.stop(audioCtx.currentTime + 0.5);
+}
 
 function getActiveOrders() {
     return JSON.parse(localStorage.getItem('activeOrders')) || [];
@@ -18,6 +47,26 @@ function updateClock() {
 // Render Tickets
 function render() {
     activeOrders = getActiveOrders();
+
+    // Check for new orders
+    const currentIds = new Set(activeOrders.map(o => o.id));
+    let hasNew = false;
+
+    for (let id of currentIds) {
+        if (!knownOrderIds.has(id)) {
+            hasNew = true;
+            break;
+        }
+    }
+
+    // Play sound if new and NOT first load
+    if (hasNew && !isFirstLoad) {
+        playNotification();
+    }
+
+    // Update known IDs
+    knownOrderIds = currentIds;
+    isFirstLoad = false;
 
     if (activeOrders.length === 0) {
         grid.innerHTML = '<div style="color:#94a3b8; grid-column:1/-1; text-align:center; font-size:1.5rem; margin-top:3rem;">No pending orders</div>';
@@ -75,6 +124,9 @@ window.completeOrder = function (timestamp) {
     // 2. Save
     localStorage.setItem('activeOrders', JSON.stringify(orders));
 
+    // Update known IDs immediately to avoid re-triggering (though strictly not needed if render handles it)
+    knownOrderIds = new Set(orders.map(o => o.id));
+
     // 3. Re-render
     render();
 }
@@ -84,6 +136,13 @@ window.completeOrder = function (timestamp) {
 setInterval(updateClock, 1000);
 updateClock();
 render();
+
+// Enable Audio Context on first click (Browser Policy)
+document.addEventListener('click', () => {
+    if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+    }
+}, { once: true });
 
 // Poll for new orders every 3 seconds
 setInterval(render, 3000);

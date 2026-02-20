@@ -37,12 +37,18 @@ let state = {
 };
 
 // DOM Elements
-const app = document.querySelector('#app');
+// const app = document.querySelector('#app'); // Moved inside renderApp
 
 // --- Render Logic ---
 
 function renderApp() {
-  if (!app) return; // Not on the main page
+  const app = document.querySelector('#app');
+  console.log('renderApp called. #app found:', !!app);
+
+  if (!app) {
+    console.error('CRITICAL: #app not found in DOM!');
+    return; // Not on the main page
+  }
 
   // Dynamic Tabs
   const categories = Object.keys(MENU);
@@ -59,7 +65,7 @@ function renderApp() {
         <div class="server-info">
           <span>Server: ${currentUser}</span>
           <span>Order #<input type="text" id="order-num-input" value="${state.orderNumber}" style="width:80px; padding:0.25rem; border-radius:0.25rem; border:none; margin-left:0.25rem; font-weight:bold; text-align:center; color:#1e293b;"></span>
-          <button class="btn-primary" onclick="window.location.href='/login.html'">Logout</button>
+          <button class="btn-primary" onclick="logout()">Logout</button>
         </div>
       </header>
 
@@ -258,10 +264,25 @@ function processPayment() {
 // --- Init Logic ---
 
 function init() {
-  // Clear session if on Login Page
-  if (window.location.pathname.includes('login.html')) {
+  console.log('Main.js init() started. Path:', window.location.pathname);
+
+  // Safe Logout: Only clear if explicitly requested
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('logout') === 'true') {
+    console.log('Logout flag detected. Clearing session.');
     localStorage.removeItem('currentUser');
     localStorage.removeItem('role');
+    // Clean URL
+    window.history.replaceState({}, document.title, window.location.pathname);
+  }
+
+  // Bind Dashboard Logout (if present)
+  const dashLogout = document.getElementById('dash-logout');
+  if (dashLogout) {
+    dashLogout.addEventListener('click', (e) => {
+      e.preventDefault();
+      logout();
+    });
   }
 
   // Auth Guard for Protected Pages
@@ -341,8 +362,10 @@ function init() {
           window.location.href = '/dashboard.html';
         } else if (user.role === 'Kitchen') {
           window.location.href = '/kitchen.html';
+        } else if (user.role === 'Server') {
+          window.location.href = '/pos.html';
         } else {
-          window.location.href = '/';
+          window.location.href = '/pos.html'; // Default to POS
         }
       } else {
         alert('Invalid credentials!');
@@ -362,7 +385,24 @@ function init() {
     return;
   }
 
-  // 4. POS Logic (Main Page)
+  // 4. POS Logic (pos.html)
+  // Ensure strict auth for POS
+  const appEl = document.getElementById('app');
+  // Check if we are on the POS page (either explicit pos.html or implicit via #app availability)
+  if (appEl && (window.location.pathname.includes('pos.html') || window.location.pathname === '/')) {
+    console.log('POS Detected (#app present). Checking auth...');
+    const user = localStorage.getItem('currentUser');
+    if (!user) {
+      console.warn('No user found, redirecting to login');
+      window.location.href = '/login.html';
+      return;
+    }
+    console.log('User detected:', user, 'Rendering app...');
+  } else if (!appEl) {
+    // If we are not on a known app page, we might do nothing or just log
+    console.log('No #app detected. Not rendering POS.');
+  }
+
   renderApp();
 }
 
@@ -375,3 +415,6 @@ if (document.readyState === 'loading') {
 
 // Expose globals
 window.init = init;
+window.logout = function () {
+  window.location.href = '/login.html?logout=true';
+};
